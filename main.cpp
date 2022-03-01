@@ -1,18 +1,44 @@
 #include <iostream>
 #include <vector>
+#include <iterator>
 #define FIELD_SIZE 9
 
 using namespace std;
 
-void createEmptyMatrix()
+/**
+ * @brief This function initializes the matrix using '.' as 
+ * representation of an empty cell.
+ * 
+ * @param sudokuField 
+ */
+void createEmptyMatrix(vector<vector<char>>& sudokuField)
 {
-
+	for (int i = 0; i < FIELD_SIZE; i++)
+	{
+		vector<char> row;
+		for (int j = 0; j < FIELD_SIZE; j++)
+		{
+			row.push_back('.');
+		}
+		sudokuField.push_back(row);
+	}
 }
 
+/**
+ * @brief This method prints the content of the vector values.
+ * 
+ * @tparam T 
+ * @param stream 
+ * @param values 
+ * @return ostream& 
+ */
 template<class T>
 ostream& operator<<(ostream& stream, const std::vector<T>& values)
 {
-    copy( begin(values), end(values), ostream_iterator<T>(stream, " ") );
+	for (auto &value : values)
+	{
+		stream << value << " ";
+	}
     stream << '\n';
     return stream;
 }
@@ -20,28 +46,8 @@ ostream& operator<<(ostream& stream, const std::vector<T>& values)
 
 int main()
 {
-	cout << " CHECK -1 ";
 	vector<vector<char>> sudokuField;
-	cout << " CHECK 0 ";
-	for (int i = 0; i < FIELD_SIZE; i++)
-	{
-		vector<char> row;
-		cout << " CHECK 0 - 1 ";
-		for (int j = 0; j < FIELD_SIZE; j++)
-		{
-			row.push_back('.');
-		}
-		sudokuField.push_back(row);
-	}
-	cout << " CHECK 1 ";
+	createEmptyMatrix(sudokuField);
 	cout << sudokuField;
-	// for (int i = 0; i < FIELD_SIZE; i++)
-	// {
-	// 	for (int j = 0; j < FIELD_SIZE; j++)
-	// 	{
-	// 		cout << sudokuField[i][j] << " ";
-	// 	}
-	// 	cout << "\n"; 
-	// }
 	return 0;
 }
