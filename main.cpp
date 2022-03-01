@@ -44,6 +44,7 @@ ostream& operator<<(ostream& stream, const std::vector<T>& values)
 }
 
 
+
 int main()
 {
 	vector<vector<char>> sudokuField;
