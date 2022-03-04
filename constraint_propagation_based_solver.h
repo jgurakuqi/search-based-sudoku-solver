@@ -1,9 +1,47 @@
 #include <algorithm>
 #include <vector>
 #include <iterator>
+#include <iostream>
 #define FIELD_SIZE 9
 
 using namespace std;
+
+/**
+ * @brief This method prints the content of the vector values.
+ *
+ * @tparam T
+ * @param stream
+ * @param values
+ * @return ostream&
+ */
+template <class T>
+ostream &operator<<(ostream &stream, const std::vector<T> &values)
+{
+    for (auto &value : values)
+    {
+        stream << value << " ";
+    }
+    // stream << '\n';
+    return stream;
+}
+
+void printSudokuField(vector<vector<int>> sudokuField)
+{
+    if (sudokuField.empty())
+    {
+        return;
+    }
+
+    for (int i = 0; i < FIELD_SIZE; i++)
+    {
+        cout << "| ";
+        for (int j = 0; j < FIELD_SIZE; j++)
+        {
+            cout << sudokuField[i][j] << " ";
+        }
+        cout << "|\n";
+    }
+}
 
 /**
  * @brief The following function performs the constraint propagation over the column, row and block related
@@ -20,6 +58,14 @@ void updateDomains(vector<vector<int>> &sudokuField, vector<vector<vector<int>>>
         return;
     int blockRowStart, blockColStart;
     // Domain deallocation
+    int DEBUG_PRINT_IF_FIRST_SET = !domainsMatrix[row][col].empty();
+    if (row == 1 && col == 0 && sudokuField[row][col] == 4 && DEBUG_PRINT_IF_FIRST_SET)
+    {
+        printSudokuField(sudokuField);
+        cout << "\n\n";
+        // cout << "PRE CYCLE domainsMatrix[i][j]: " << domainsMatrix[row][col] << "\n";
+    }
+
     domainsMatrix[row][col].resize(0);
     // Row and column control
     for (int i = 0; i < FIELD_SIZE; i++)
@@ -43,13 +89,25 @@ void updateDomains(vector<vector<int>> &sudokuField, vector<vector<vector<int>>>
                 domainsMatrix[i][col].end());
         }
     }
+
     // Block control
     blockRowStart = row - (row % 3);
     blockColStart = col - (col % 3);
+    // if (row == 1 && col == 0)
+    // {
+    //     cout << "blockRowStart: " << blockRowStart << "\n";
+    //     cout << "blockColStart: " << blockColStart << "\n";
+    // }
     for (int i = blockRowStart; i < (blockRowStart + 2); i++)
     {
         for (int j = blockColStart; j < (blockColStart + 2); j++)
         {
+            // if (row == 1 && col == 0 && sudokuField[row][col] == 4 && DEBUG_PRINT_IF_FIRST_SET)
+            // {
+            //     cout << "i: " << i << "\n";
+            //     cout << "j: " << j << "\n";
+            //     cout << "PRE REMOVAL domainsMatrix[i][j]: " << domainsMatrix[i][j] << "\n";
+            // }
             if (sudokuField[i][j] == 0 && i != row && j != col)
             {
                 domainsMatrix[i][j].erase(
@@ -59,6 +117,10 @@ void updateDomains(vector<vector<int>> &sudokuField, vector<vector<vector<int>>>
                         sudokuField[row][col]),
                     domainsMatrix[i][j].end());
             }
+            // if (row == 1 && col == 0 && sudokuField[row][col] == 4 && DEBUG_PRINT_IF_FIRST_SET)
+            // {
+            //     cout << "POST REMOVAL domainsMatrix[i][j]: " << domainsMatrix[i][j] << "\n";
+            // }
         }
     }
 };
