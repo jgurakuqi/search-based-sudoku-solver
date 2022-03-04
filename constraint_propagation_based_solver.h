@@ -31,7 +31,6 @@ void printSudokuField(vector<vector<int>> sudokuField)
     {
         return;
     }
-
     for (int i = 0; i < FIELD_SIZE; i++)
     {
         cout << "| ";
@@ -58,14 +57,6 @@ void updateDomains(vector<vector<int>> &sudokuField, vector<vector<vector<int>>>
         return;
     int blockRowStart, blockColStart;
     // Domain deallocation
-    int DEBUG_PRINT_IF_FIRST_SET = !domainsMatrix[row][col].empty();
-    if (row == 1 && col == 0 && sudokuField[row][col] == 4 && DEBUG_PRINT_IF_FIRST_SET)
-    {
-        printSudokuField(sudokuField);
-        cout << "\n\n";
-        // cout << "PRE CYCLE domainsMatrix[i][j]: " << domainsMatrix[row][col] << "\n";
-    }
-
     domainsMatrix[row][col].resize(0);
     // Row and column control
     for (int i = 0; i < FIELD_SIZE; i++)
@@ -93,21 +84,10 @@ void updateDomains(vector<vector<int>> &sudokuField, vector<vector<vector<int>>>
     // Block control
     blockRowStart = row - (row % 3);
     blockColStart = col - (col % 3);
-    // if (row == 1 && col == 0)
-    // {
-    //     cout << "blockRowStart: " << blockRowStart << "\n";
-    //     cout << "blockColStart: " << blockColStart << "\n";
-    // }
-    for (int i = blockRowStart; i < (blockRowStart + 2); i++)
+    for (int i = blockRowStart; i < (blockRowStart + 3); i++)
     {
-        for (int j = blockColStart; j < (blockColStart + 2); j++)
+        for (int j = blockColStart; j < (blockColStart + 3); j++)
         {
-            // if (row == 1 && col == 0 && sudokuField[row][col] == 4 && DEBUG_PRINT_IF_FIRST_SET)
-            // {
-            //     cout << "i: " << i << "\n";
-            //     cout << "j: " << j << "\n";
-            //     cout << "PRE REMOVAL domainsMatrix[i][j]: " << domainsMatrix[i][j] << "\n";
-            // }
             if (sudokuField[i][j] == 0 && i != row && j != col)
             {
                 domainsMatrix[i][j].erase(
@@ -117,10 +97,6 @@ void updateDomains(vector<vector<int>> &sudokuField, vector<vector<vector<int>>>
                         sudokuField[row][col]),
                     domainsMatrix[i][j].end());
             }
-            // if (row == 1 && col == 0 && sudokuField[row][col] == 4 && DEBUG_PRINT_IF_FIRST_SET)
-            // {
-            //     cout << "POST REMOVAL domainsMatrix[i][j]: " << domainsMatrix[i][j] << "\n";
-            // }
         }
     }
 };
@@ -162,6 +138,7 @@ vector<vector<int>> solveSudokuInternal(vector<vector<int>> sudokuField, vector<
 {
     // Constraint propagation step
     updateDomains(sudokuField, domainsMatrix, actRow, actCol);
+
     int emptyCellRow, emptyCellColumn = -1;
     vector<vector<int>> result;
 
