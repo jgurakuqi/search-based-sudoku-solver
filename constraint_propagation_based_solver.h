@@ -142,6 +142,7 @@ vector<vector<int>> solveSudokuInternal(vector<vector<int>> sudokuField, vector<
     int emptyCellRow, emptyCellColumn = -1;
     vector<vector<int>> result;
 
+    // Check if any constraint was violated, if not get the first empty cell to fill.
     for (int i = 0; i < FIELD_SIZE; i++)
     {
         for (int j = 0; j < FIELD_SIZE; j++)
@@ -157,11 +158,12 @@ vector<vector<int>> solveSudokuInternal(vector<vector<int>> sudokuField, vector<
             }
         }
     }
-    // Potresti fare differentemente il controllo, per vedere prima se la matrice e' gia completa.
+    // Check if all the empty cells have been filled, and if so, return this field as result.
     if (emptyCellColumn == -1)
     {
         return sudokuField;
     }
+    // Try to fill a cell.
     while (!domainsMatrix[emptyCellRow][emptyCellColumn].empty() && result.empty())
     {
         vector<vector<int>> nextStepField = sudokuField;
