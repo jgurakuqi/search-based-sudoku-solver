@@ -14,7 +14,7 @@ using namespace std;
  * @param row
  * @param col
  */
-void updateDomainsX(vector<vector<int>> &sudokuField, vector<vector<vector<int>>> &domainsMatrix, int row, int col)
+void updateDomains(vector<vector<int>> &sudokuField, vector<vector<vector<int>>> &domainsMatrix, int row, int col)
 {
     if (row == -1)
         return;
@@ -63,10 +63,43 @@ void updateDomainsX(vector<vector<int>> &sudokuField, vector<vector<vector<int>>
     }
 };
 
-vector<vector<int>> solveSudokuI(vector<vector<int>> sudokuField, vector<vector<vector<int>>> domainsMatrix, int actRow, int actCol)
+/**
+ * @brief The following function initializes a matrix big as the sudoku field, where every cell will be
+ * filled with the domain of the same cell on the sudoku field.
+ *
+ * @param sudokuField
+ * @param domainsMatrix
+ */
+void initializeDomainsMatrix(vector<vector<int>> &sudokuField, vector<vector<vector<int>>> &domainsMatrix)
+{
+    for (int i = 0; i < FIELD_SIZE; i++)
+    {
+        for (int j = 0; j < FIELD_SIZE; j++)
+        {
+            if (sudokuField[i][j] != 0)
+            {
+                updateDomains(sudokuField, domainsMatrix, i, j);
+            }
+        }
+    }
+};
+
+/**
+ * @brief The following function is called by solveSudoku to perform a Forward checking based Constraint propagation to
+ * solve the sudoku game: each time an empty cell is set, and all the domains of the matrix are updated, to check
+ * if there is a constraint violation, and if a violation happens, the recursion reverts to the previous step.
+ * The algorithm proceeds recursively at setting cells, until a solution is found.
+ *
+ * @param sudokuField
+ * @param domainsMatrix
+ * @param actRow
+ * @param actCol
+ * @return vector<vector<int>>
+ */
+vector<vector<int>> solveSudokuInternal(vector<vector<int>> sudokuField, vector<vector<vector<int>>> domainsMatrix, int actRow, int actCol)
 {
     // Constraint propagation step
-    updateDomainsX(sudokuField, domainsMatrix, actRow, actCol);
+    updateDomains(sudokuField, domainsMatrix, actRow, actCol);
     int emptyCellRow, emptyCellColumn = -1;
     vector<vector<int>> result;
 
@@ -94,7 +127,7 @@ vector<vector<int>> solveSudokuI(vector<vector<int>> sudokuField, vector<vector<
     {
         vector<vector<int>> nextStepField = sudokuField;
         nextStepField[emptyCellRow][emptyCellColumn] = domainsMatrix[emptyCellRow][emptyCellColumn][0];
-        result = solveSudokuI(nextStepField, domainsMatrix, emptyCellRow, emptyCellColumn);
+        result = solveSudokuInternal(nextStepField, domainsMatrix, emptyCellRow, emptyCellColumn);
         if (result.empty())
         {
             domainsMatrix[emptyCellRow][emptyCellColumn].erase(domainsMatrix[emptyCellRow][emptyCellColumn].begin());
@@ -103,12 +136,17 @@ vector<vector<int>> solveSudokuI(vector<vector<int>> sudokuField, vector<vector<
     return result;
 }
 
-vector<vector<int>> solveSudoku(vector<vector<int>> sudokuField, vector<vector<vector<int>>> domainsMatrix)
+/**
+ * @brief The following function takes a sudoku field as input and returns the solved field (if existing).
+ *
+ * @param sudokuField
+ * @return vector<vector<int>>
+ */
+vector<vector<int>> solveSudoku(vector<vector<int>> sudokuField)
 {
-    //@TODO: METTERE QUI LA CREAZIONE DELLA DOMAIN MATRIX.
-    // if (sudokuField == nullptr)
-    // {
-    //     return nullptr;
-    // }
-    return solveSudokuI(sudokuField, domainsMatrix, -1, -1);
+    vector<vector<vector<int>>> domainsMatrix(FIELD_SIZE,
+                                              vector<vector<int>>(FIELD_SIZE,
+                                                                  vector<int>{1, 2, 3, 4, 5, 6, 7, 8, 9}));
+    initializeDomainsMatrix(sudokuField, domainsMatrix);
+    return solveSudokuInternal(sudokuField, domainsMatrix, -1, -1);
 }
