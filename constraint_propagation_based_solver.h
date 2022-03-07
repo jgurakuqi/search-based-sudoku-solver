@@ -6,6 +6,9 @@
 
 using namespace std;
 
+typedef std::vector<std::vector<int>> int2DMatrix;
+typedef vector<int2DMatrix> int3DMatrix;
+
 /**
  * @brief This method prints the content of the vector values.
  *
@@ -25,7 +28,7 @@ ostream &operator<<(ostream &stream, const std::vector<T> &values)
     return stream;
 }
 
-void printSudokuField(vector<vector<int>> sudokuField)
+void printSudokuField(int2DMatrix sudokuField)
 {
     if (sudokuField.empty())
     {
@@ -51,7 +54,7 @@ void printSudokuField(vector<vector<int>> sudokuField)
  * @param row
  * @param col
  */
-void updateDomains(vector<vector<int>> &sudokuField, vector<vector<vector<int>>> &domainsMatrix, int row, int col)
+void updateDomains(int2DMatrix &sudokuField, int3DMatrix &domainsMatrix, int row, int col)
 {
     if (row == -1)
         return;
@@ -108,7 +111,7 @@ void updateDomains(vector<vector<int>> &sudokuField, vector<vector<vector<int>>>
  * @param sudokuField
  * @param domainsMatrix
  */
-void initializeDomainsMatrix(vector<vector<int>> &sudokuField, vector<vector<vector<int>>> &domainsMatrix)
+void initializeDomainsMatrix(int2DMatrix &sudokuField, int3DMatrix &domainsMatrix)
 {
     for (int i = 0; i < FIELD_SIZE; i++)
     {
@@ -132,15 +135,15 @@ void initializeDomainsMatrix(vector<vector<int>> &sudokuField, vector<vector<vec
  * @param domainsMatrix
  * @param actRow
  * @param actCol
- * @return vector<vector<int>>
+ * @return int2DMatrix
  */
-vector<vector<int>> solveSudokuInternal(vector<vector<int>> sudokuField, vector<vector<vector<int>>> domainsMatrix, int actRow, int actCol)
+int2DMatrix solveSudokuInternal(int2DMatrix sudokuField, int3DMatrix domainsMatrix, int actRow, int actCol)
 {
     // Constraint propagation step
     updateDomains(sudokuField, domainsMatrix, actRow, actCol);
 
     int emptyCellRow, emptyCellColumn = -1;
-    vector<vector<int>> result;
+    int2DMatrix result;
 
     // Check if any constraint was violated, if not get the first empty cell to fill.
     for (int i = 0; i < FIELD_SIZE; i++)
@@ -166,7 +169,7 @@ vector<vector<int>> solveSudokuInternal(vector<vector<int>> sudokuField, vector<
     // Try to fill a cell.
     while (!domainsMatrix[emptyCellRow][emptyCellColumn].empty() && result.empty())
     {
-        vector<vector<int>> nextStepField = sudokuField;
+        int2DMatrix nextStepField = sudokuField;
         nextStepField[emptyCellRow][emptyCellColumn] = domainsMatrix[emptyCellRow][emptyCellColumn][0];
         result = solveSudokuInternal(nextStepField, domainsMatrix, emptyCellRow, emptyCellColumn);
         if (result.empty())
@@ -181,13 +184,13 @@ vector<vector<int>> solveSudokuInternal(vector<vector<int>> sudokuField, vector<
  * @brief The following function takes a sudoku field as input and returns the solved field (if existing).
  *
  * @param sudokuField
- * @return vector<vector<int>>
+ * @return int2DMatrix
  */
-vector<vector<int>> solveSudoku(vector<vector<int>> sudokuField)
+int2DMatrix solveSudoku(int2DMatrix sudokuField)
 {
-    vector<vector<vector<int>>> domainsMatrix(FIELD_SIZE,
-                                              vector<vector<int>>(FIELD_SIZE,
-                                                                  vector<int>{1, 2, 3, 4, 5, 6, 7, 8, 9}));
+    int3DMatrix domainsMatrix(FIELD_SIZE,
+                              int2DMatrix(FIELD_SIZE,
+                                          vector<int>{1, 2, 3, 4, 5, 6, 7, 8, 9}));
     initializeDomainsMatrix(sudokuField, domainsMatrix);
     return solveSudokuInternal(sudokuField, domainsMatrix, -1, -1);
 }
