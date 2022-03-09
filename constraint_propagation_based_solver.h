@@ -6,6 +6,10 @@
 
 using namespace std;
 
+/**
+ * @brief Defined aliases for vector<vector<int>> and vector<vector<vector<int>>>
+ *
+ */
 typedef std::vector<std::vector<int>> int2DMatrix;
 typedef vector<int2DMatrix> int3DMatrix;
 
@@ -34,10 +38,11 @@ void printSudokuField(int2DMatrix sudokuField)
     {
         return;
     }
+    int j;
     for (int i = 0; i < FIELD_SIZE; i++)
     {
         cout << "| ";
-        for (int j = 0; j < FIELD_SIZE; j++)
+        for (j = 0; j < FIELD_SIZE; j++)
         {
             cout << sudokuField[i][j] << " ";
         }
@@ -87,9 +92,10 @@ void updateDomains(int2DMatrix &sudokuField, int3DMatrix &domainsMatrix, int row
     // Block control
     blockRowStart = row - (row % 3);
     blockColStart = col - (col % 3);
+    int j;
     for (int i = blockRowStart; i < (blockRowStart + 3); i++)
     {
-        for (int j = blockColStart; j < (blockColStart + 3); j++)
+        for (j = blockColStart; j < (blockColStart + 3); j++)
         {
             if (sudokuField[i][j] == 0 && i != row && j != col)
             {
@@ -113,9 +119,10 @@ void updateDomains(int2DMatrix &sudokuField, int3DMatrix &domainsMatrix, int row
  */
 void initializeDomainsMatrix(int2DMatrix &sudokuField, int3DMatrix &domainsMatrix)
 {
+    int j;
     for (int i = 0; i < FIELD_SIZE; i++)
     {
-        for (int j = 0; j < FIELD_SIZE; j++)
+        for (j = 0; j < FIELD_SIZE; j++)
         {
             if (sudokuField[i][j] != 0)
             {
@@ -145,10 +152,11 @@ int2DMatrix solveSudokuInternal(int2DMatrix sudokuField, int3DMatrix domainsMatr
     int emptyCellRow, emptyCellColumn = -1;
     int2DMatrix result;
 
+    int j;
     // Check if any constraint was violated, if not get the first empty cell to fill.
     for (int i = 0; i < FIELD_SIZE; i++)
     {
-        for (int j = 0; j < FIELD_SIZE; j++)
+        for (j = 0; j < FIELD_SIZE; j++)
         {
             if (sudokuField[i][j] == 0 && domainsMatrix[i][j].empty())
             {
