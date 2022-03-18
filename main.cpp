@@ -50,12 +50,26 @@ int main()
 		{0, 0, 0, 0, 0, 0, 0, 0, 0},
 		{0, 0, 0, 0, 0, 0, 0, 0, 0}};
 
+	vector<vector<int>> sudokuField5{
+		{0, 0, 0, 0, 0, 0, 9, 0, 7},
+		{0, 0, 0, 4, 2, 0, 1, 8, 0},
+		{0, 0, 0, 7, 0, 5, 0, 2, 6},
+		{1, 0, 0, 9, 0, 4, 0, 0, 0},
+		{0, 5, 0, 0, 0, 0, 0, 4, 0},
+		{0, 0, 0, 5, 0, 7, 0, 0, 9},
+		{9, 2, 0, 1, 0, 8, 0, 0, 0},
+		{0, 3, 4, 0, 5, 9, 0, 0, 0},
+		{5, 0, 7, 0, 0, 0, 0, 0, 0}};
+
+	cout << "\nSudokuField1:\n";
 	printSudokuField(solveSudoku(sudokuField));
-	cout << "\n";
+	cout << "\nSudokuField2:\n";
 	printSudokuField(solveSudoku(sudokuField2));
-	cout << "\n";
+	cout << "\nSudokuField3:\n";
 	printSudokuField(solveSudoku(sudokuField3));
-	cout << "\n";
+	cout << "\nSudokuField4:\n";
 	printSudokuField(solveSudoku(sudokuField4));
+	cout << "\nSudokuField5:\n";
+	printSudokuField(solveSudoku(sudokuField5));
 	return 0;
 }
