@@ -59,7 +59,10 @@ void printSudokuField(int2DMatrix sudokuField)
  * @param row
  * @param col
  */
-void updateDomains(int2DMatrix &sudokuField, int3DMatrix &domainsMatrix, int row, int col)
+void updateDomains(int2DMatrix &sudokuField,
+                   int3DMatrix &domainsMatrix,
+                   int row,
+                   int col)
 {
     if (row == -1)
         return;
