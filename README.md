@@ -1,17 +1,3 @@
-
-# Constraint Propagation approach
-
-- Create a matrix class, which will be used to create sudoku fields and to store the domains of each 
-  empty cell.
-- Solve the problem using a Forward Checking approach, where every variable will have a domain, to be 
-  updated on each "move", in order to detect any constraint violation. In case of constraint violation,
-  there will be a backtracking, reaching the most recent "snapshot" of the field, to proceed with other
-  values.
-
-# Relaxation Labeling approach
-
-
-
 ## Table of Contents
 
 - [Requirements](#Requirements)
