@@ -58,13 +58,13 @@ For the Relaxation labeling based solver:
 python main.py
 ```
 
-# Contributing
+## Contributing
 
 ```bash
 git clone https://github.com/jgurakuqi/search-based-sudoku-solver
 ```
 
-# License
+## License
 
 MIT License
 
