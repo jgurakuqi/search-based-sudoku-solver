@@ -40,7 +40,10 @@ The solver should take as input a matrix withwhere empty squares are represented
 
 ## Installation
 
-In order to run this project a basic C++ compiler is required.
+In order to run this project, Python 3 and a basic C++ compiler are required, along with the numpy module for Python:
+```bash
+pip3 install numpy
+```
 
 ## Usage
 
