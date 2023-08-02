@@ -40,7 +40,7 @@ The solver should take as input a matrix withwhere empty squares are represented
                                             59. .26 ...
                                             2.. ..5 .64
 
-# Hints for Constraint Propagation and Backtracking:
+**Hints for Constraint Propagation and Backtracking:**
 - Each cell should be a variable that can take values in the domain (1, … ,9).
 - The two types of constraints in the definition form as many types of constraints:
   - Direct constraints impose that no two equal digits appear for each row, column, and box.
@@ -48,7 +48,7 @@ The solver should take as input a matrix withwhere empty squares are represented
 - You can think of other types of (pairwise) constraints to further improve the constraint propagation phase.
 - Note: most puzzles found in the magazines can be solved with only the constraint propagation step.
 
-# Hints for Relaxation Labeling:
+**Hints for Relaxation Labeling:**
 - Each cell should be an object, the values between 1 and 9 labels.
 - The compatibility 𝑟𝑖𝑗(𝜆, 𝜇) should be 1 if the assignments satisfy direct constraints, 0 otherwise.
 
