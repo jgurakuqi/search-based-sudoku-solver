@@ -1,7 +1,7 @@
 
 #include <chrono>
 #include "constraint_propagation_based_solver.hpp"
-#include "relaxation_labeling_based_solver.h"
+#include "relaxation_labeling_based_solver.hpp"
 using namespace std;
 using namespace std::chrono;
 
